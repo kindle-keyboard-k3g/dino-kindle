@@ -126,8 +126,13 @@ private:
  */
 class Application {
 public:
+    /// Constructs application with parsed CLI options.
     explicit Application(const ApplicationOptions& options);
 
+    /**
+     * @brief Executes main 80ms loop until shutdown signal or max frames.
+     * @return Process exit code (0 on normal exit).
+     */
     int run();
 
 private:

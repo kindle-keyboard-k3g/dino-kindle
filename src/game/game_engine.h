@@ -35,13 +35,15 @@ private:
  */
 class EngineState {
 public:
-    EngineState() : is_game_over_(false) {}
+    EngineState() : is_game_over_(false), is_godmode_(false) {}
 
     [[nodiscard]] domain::WorldStatus& status() { return status_; }
     [[nodiscard]] const domain::WorldStatus& status() const { return status_; }
     [[nodiscard]] bool is_game_over() const { return is_game_over_; }
+    [[nodiscard]] bool is_godmode() const { return is_godmode_; }
 
     void set_game_over(bool over) { is_game_over_ = over; }
+    void set_godmode(bool godmode) { is_godmode_ = godmode; }
     void reset() {
         status_.reset();
         is_game_over_ = false;
@@ -50,6 +52,7 @@ public:
 private:
     domain::WorldStatus status_;
     bool is_game_over_;
+    bool is_godmode_;
 };
 
 /**
@@ -57,15 +60,48 @@ private:
  */
 class GameEngine {
 public:
+    /**
+     * @brief Initializes engine entities, spawner, and initial state.
+     * @param seed Random seed for obstacle generation.
+     */
     explicit GameEngine(uint32_t seed = 0x87654321U);
 
+    /**
+     * @brief Advances simulation by one discrete frame tick.
+     * @param input Active input state (jumps, ducks, restarts).
+     */
     void step(const InputState& input);
+
+    /**
+     * @brief Resets game world for a new run while retaining high score.
+     */
     void restart();
+
+    /**
+     * @brief Injects loaded high score from persistent storage.
+     * @param high Loaded high score value.
+     */
     void set_high_score(domain::ScoreValue high);
 
+    /**
+     * @brief Captures an immutable snapshot of current game state.
+     * @return GameSnapshot for renderer.
+     */
     [[nodiscard]] GameSnapshot snapshot() const;
+
+    /**
+     * @brief Checks if current game is in game-over state.
+     * @return True if game over.
+     */
     [[nodiscard]] bool is_game_over() const { return state_.is_game_over(); }
 
+    /// Sets godmode to prevent game-over on obstacle collision.
+    void set_godmode(bool godmode) { state_.set_godmode(godmode); }
+
+    /**
+     * @brief Injects an obstacle for deterministic collision unit testing.
+     * @param obstacle Test obstacle instance.
+     */
     void inject_obstacle_for_testing(const domain::Obstacle& obstacle);
 
 private:

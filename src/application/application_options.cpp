@@ -20,6 +20,14 @@ void parse_single_arg(int index,
         options.set_ppm(true);
         return;
     }
+    if (std::strcmp(arg, "--debug") == 0 || std::strcmp(arg, "-d") == 0) {
+        options.set_debug(true);
+        return;
+    }
+    if (std::strcmp(arg, "--godmode") == 0 || std::strcmp(arg, "-g") == 0) {
+        options.set_godmode(true);
+        return;
+    }
     if (std::strcmp(arg, "--seed") == 0 && index + 1 < argc) {
         options.set_seed(static_cast<uint32_t>(std::strtoul(argv[index + 1], nullptr, 0)));
         return;

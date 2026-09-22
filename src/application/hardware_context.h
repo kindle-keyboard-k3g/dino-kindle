@@ -20,7 +20,9 @@ public:
                   std::unique_ptr<hal::EinkController> epdc)
         : framebuffer_(std::move(fb)), eink_controller_(std::move(epdc)) {}
 
+    /// Reference to active FrameBuffer device.
     [[nodiscard]] hal::FrameBuffer& framebuffer() { return *framebuffer_; }
+    /// Reference to active EinkController device.
     [[nodiscard]] hal::EinkController& eink() { return *eink_controller_; }
 
 private:
@@ -37,7 +39,9 @@ public:
                      std::unique_ptr<persistence::HighScoreStore> store)
         : input_device_(std::move(input)), high_score_store_(std::move(store)) {}
 
+    /// Reference to active InputDevice.
     [[nodiscard]] hal::InputDevice& input() { return *input_device_; }
+    /// Reference to active HighScoreStore.
     [[nodiscard]] persistence::HighScoreStore& store() { return *high_score_store_; }
 
 private:
@@ -53,10 +57,17 @@ public:
     HardwareContext(DisplayBundle display, PeripheralBundle peripherals)
         : display_(std::move(display)), peripherals_(std::move(peripherals)) {}
 
+    /**
+     * @brief Creates appropriate HardwareContext based on CLI execution options.
+     * @param options Parsed ApplicationOptions.
+     * @return Unique pointer to configured HardwareContext.
+     */
     [[nodiscard]] static std::unique_ptr<HardwareContext> create(
         const ApplicationOptions& options);
 
+    /// Accesses display bundle (framebuffer and EPDC).
     [[nodiscard]] DisplayBundle& display() { return display_; }
+    /// Accesses peripheral bundle (input device and high score store).
     [[nodiscard]] PeripheralBundle& peripherals() { return peripherals_; }
 
 private:

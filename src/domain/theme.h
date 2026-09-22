@@ -22,11 +22,24 @@ class Theme {
 public:
     constexpr Theme() : is_night_(false), milestone_active_(false) {}
 
+    /**
+     * @brief Checks if night mode is currently active.
+     * @return True if dark background is enabled.
+     */
     [[nodiscard]] constexpr bool is_night() const { return is_night_; }
+
+    /**
+     * @brief Checks if score milestone inverted flash is active.
+     * @return True if milestone effect is playing.
+     */
     [[nodiscard]] constexpr bool is_milestone_active() const {
         return milestone_active_;
     }
 
+    /**
+     * @brief Determines background color based on day/night mode.
+     * @return ColorValue for background clear.
+     */
     [[nodiscard]] constexpr ColorValue background_color() const {
         if (is_night_) {
             return ColorValue::Black;
@@ -34,6 +47,10 @@ public:
         return ColorValue::White;
     }
 
+    /**
+     * @brief Determines foreground drawing color based on day/night mode.
+     * @return ColorValue for sprites and text.
+     */
     [[nodiscard]] constexpr ColorValue foreground_color() const {
         if (is_night_) {
             return ColorValue::White;
@@ -41,10 +58,17 @@ public:
         return ColorValue::Black;
     }
 
+    /**
+     * @brief Inverts between day (white background) and night (black background).
+     */
     void toggle_mode() {
         is_night_ = !is_night_;
     }
 
+    /**
+     * @brief Toggles milestone flash effect.
+     * @param active True to enable flash, false to disable.
+     */
     void set_milestone_active(bool active) {
         milestone_active_ = active;
     }

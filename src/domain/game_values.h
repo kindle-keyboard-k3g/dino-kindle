@@ -16,18 +16,36 @@ public:
     constexpr FixedPoint() : raw_value_(0) {}
     explicit constexpr FixedPoint(int32_t raw_value) : raw_value_(raw_value) {}
 
+    /**
+     * @brief Creates FixedPoint from integer pixel value.
+     * @param pixels Integer pixel count.
+     * @return Equivalent FixedPoint.
+     */
     [[nodiscard]] static constexpr FixedPoint from_pixels(int32_t pixels) {
         return FixedPoint(pixels * ONE_RAW);
     }
 
+    /**
+     * @brief Wraps raw 16.16 representation directly.
+     * @param raw Raw 32-bit fixed point value.
+     * @return Equivalent FixedPoint.
+     */
     [[nodiscard]] static constexpr FixedPoint from_raw(int32_t raw) {
         return FixedPoint(raw);
     }
 
+    /**
+     * @brief Converts fixed-point value to whole pixels (truncating fraction).
+     * @return Truncated pixel value.
+     */
     [[nodiscard]] constexpr int32_t to_pixels() const {
         return raw_value_ >> FRACTIONAL_BITS;
     }
 
+    /**
+     * @brief Returns underlying raw integer value.
+     * @return 16.16 raw integer.
+     */
     [[nodiscard]] constexpr int32_t raw() const { return raw_value_; }
 
     constexpr FixedPoint operator+(const FixedPoint& other) const {
@@ -86,8 +104,17 @@ class ScoreValue {
 public:
     explicit constexpr ScoreValue(int32_t points) : points_(points) {}
 
+    /**
+     * @brief Returns numerical point count.
+     * @return Score points.
+     */
     [[nodiscard]] constexpr int32_t points() const { return points_; }
 
+    /**
+     * @brief Determines if score reached a multiple of given interval.
+     * @param interval Interval stride (e.g. 700).
+     * @return True if milestone is hit.
+     */
     [[nodiscard]] constexpr bool has_reached_milestone(int32_t interval) const {
         if (points_ <= 0 || interval <= 0) {
             return false;
@@ -95,6 +122,11 @@ public:
         return (points_ % interval) == 0;
     }
 
+    /**
+     * @brief Produces a new ScoreValue incremented by delta points.
+     * @param delta Points to add.
+     * @return Incremented ScoreValue.
+     */
     [[nodiscard]] constexpr ScoreValue increment(int32_t delta) const {
         return ScoreValue(points_ + delta);
     }
@@ -120,8 +152,17 @@ public:
     explicit constexpr DistanceValue(FixedPoint distance)
         : fixed_distance_(distance) {}
 
+    /**
+     * @brief Returns fixed point distance value.
+     * @return Inner FixedPoint distance.
+     */
     [[nodiscard]] constexpr FixedPoint value() const { return fixed_distance_; }
 
+    /**
+     * @brief Produces an advanced distance value by delta.
+     * @param delta Distance to add.
+     * @return Advanced DistanceValue.
+     */
     [[nodiscard]] constexpr DistanceValue advance(FixedPoint delta) const {
         return DistanceValue(fixed_distance_ + delta);
     }

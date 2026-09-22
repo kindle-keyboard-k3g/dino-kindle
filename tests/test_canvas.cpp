@@ -28,3 +28,25 @@ DINO_TEST_CASE(TestCanvasFillRect) {
     ASSERT_EQ(canvas.get_pixel(4, 4), domain::ColorValue::Black);
     ASSERT_EQ(canvas.get_pixel(5, 5), domain::ColorValue::White); // Exclusive bound
 }
+
+DINO_TEST_CASE(TestCanvasDrawRectOutline) {
+    graphics::Canvas canvas(domain::Dimensions(20, 20));
+    canvas.clear(domain::ColorValue::White);
+
+    domain::BoundingBox box(domain::ScreenCoordinate(2, 2), domain::Dimensions(5, 5));
+    canvas.draw_rect_outline(box, domain::ColorValue::Black);
+
+    // Corners should be black
+    ASSERT_EQ(canvas.get_pixel(2, 2), domain::ColorValue::Black);
+    ASSERT_EQ(canvas.get_pixel(6, 2), domain::ColorValue::Black);
+    ASSERT_EQ(canvas.get_pixel(2, 6), domain::ColorValue::Black);
+    ASSERT_EQ(canvas.get_pixel(6, 6), domain::ColorValue::Black);
+
+    // Center should remain untouched (white)
+    ASSERT_EQ(canvas.get_pixel(4, 4), domain::ColorValue::White);
+    ASSERT_EQ(canvas.get_pixel(3, 3), domain::ColorValue::White);
+
+    // Outside should be white
+    ASSERT_EQ(canvas.get_pixel(1, 1), domain::ColorValue::White);
+    ASSERT_EQ(canvas.get_pixel(7, 7), domain::ColorValue::White);
+}

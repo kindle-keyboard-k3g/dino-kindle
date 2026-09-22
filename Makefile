@@ -50,6 +50,9 @@ asan: CXXFLAGS += -fsanitize=address,undefined -g
 asan: clean bin/dino-tests
 	./bin/dino-tests
 
+debug: CXXFLAGS += -g -O0 -fsanitize=address,undefined -DDINO_DEBUG_LOG
+debug: clean host test
+
 kindle: bin
 	$(ARM_CXX) $(ARM_CXXFLAGS) $(SRC_COMMON) $(SRC_MAIN) -o bin/dino-arm32
 
@@ -62,4 +65,4 @@ run-ansi: host
 clean:
 	rm -rf bin obj output.ppm dino.ppm tmp_*.dat
 
-.PHONY: all host test asan kindle package run-ansi clean
+.PHONY: all host test asan debug kindle package run-ansi clean

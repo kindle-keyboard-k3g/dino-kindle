@@ -41,3 +41,17 @@ DINO_TEST_CASE(TestGameEngineCollisionAndRestart) {
     engine.step(input);
     ASSERT_FALSE(engine.is_game_over());
 }
+
+DINO_TEST_CASE(TestGameEngineGodmodePreventsGameOver) {
+    game::GameEngine engine(0x1234U);
+    engine.set_godmode(true);
+    game::InputState input;
+
+    // Manually place obstacle directly at player
+    engine.inject_obstacle_for_testing(domain::Obstacle(
+        domain::ObstacleType::SmallCactus,
+        domain::FixedPoint::from_pixels(domain::Player::X_POSITION)));
+
+    engine.step(input);
+    ASSERT_FALSE(engine.is_game_over());
+}

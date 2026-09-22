@@ -18,12 +18,18 @@ public:
 
     DirtyRegionTracker() : regions_{}, count_(0) {}
 
+    /// Number of active dirty bounding boxes.
     [[nodiscard]] size_t count() const { return count_; }
+    /// Retrieves dirty region at specified index.
     [[nodiscard]] const domain::BoundingBox& at(size_t index) const;
 
+    /// Adds a damaged region expanded by anti-ghosting margin.
     void add_region(const domain::BoundingBox& box);
+    /// Marks the full screen area as damaged.
     void add_full_screen(int32_t width, int32_t height);
+    /// Clears all tracked damage regions.
     void clear();
+    /// Combines intersecting or adjacent damage boxes.
     void merge_overlapping();
 
 private:

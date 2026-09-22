@@ -56,13 +56,46 @@ public:
     constexpr Obstacle(ObstacleType type, FixedPoint start_x)
         : type_(type), position_(start_x, compute_y(type)) {}
 
+    /**
+     * @brief Returns obstacle type classification.
+     * @return ObstacleType enum value.
+     */
     [[nodiscard]] constexpr ObstacleType type() const { return type_; }
+
+    /**
+     * @brief Discrete screen coordinate of upper-left sprite corner.
+     * @return ScreenCoordinate on screen.
+     */
     [[nodiscard]] ScreenCoordinate position() const;
+
+    /**
+     * @brief Dimensions of the obstacle sprite.
+     * @return Dimensions width and height.
+     */
     [[nodiscard]] Dimensions dimensions() const;
+
+    /**
+     * @brief Visual bounding box for rendering and screen clearance.
+     * @return BoundingBox matching sprite size.
+     */
     [[nodiscard]] BoundingBox visual_box() const;
+
+    /**
+     * @brief Collision bounding box (inset for lenient gameplay).
+     * @return Inset BoundingBox.
+     */
     [[nodiscard]] BoundingBox hitbox() const;
+
+    /**
+     * @brief Checks if obstacle has scrolled off the left edge of the screen.
+     * @return True if past screen boundary.
+     */
     [[nodiscard]] bool is_off_screen() const;
 
+    /**
+     * @brief Advances obstacle position to the left.
+     * @param speed Scroll velocity in fixed-point.
+     */
     void update(FixedPoint speed);
 
 private:

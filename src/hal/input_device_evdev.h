@@ -12,12 +12,19 @@ namespace dino::hal {
  */
 class InputDeviceEvdev : public InputDevice {
 public:
+    /**
+     * @brief Opens Kindle keyboard, five-way, and volume event nodes.
+     */
     InputDeviceEvdev();
     ~InputDeviceEvdev() override;
 
     InputDeviceEvdev(const InputDeviceEvdev&) = delete;
     InputDeviceEvdev& operator=(const InputDeviceEvdev&) = delete;
 
+    /**
+     * @brief Reads non-blocking input events across descriptors into input state.
+     * @param state Target InputState to mutate.
+     */
     void poll_events(game::InputState& state) override;
 
 private:

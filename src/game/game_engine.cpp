@@ -36,6 +36,9 @@ void GameEngine::check_collisions() {
     if (!CollisionDetector::has_collision(actors.player(), actors.obstacles())) {
         return;
     }
+    if (state_.is_godmode()) {
+        return;
+    }
     actors.player().crash();
     state_.set_game_over(true);
 }

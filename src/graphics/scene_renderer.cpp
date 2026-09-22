@@ -74,6 +74,17 @@ void SceneRenderer::render_game_over(Canvas& canvas, domain::ColorValue fg_color
     BitmapFont::draw_text(canvas, hint_x, 320, hint, fg_color);
 }
 
+void SceneRenderer::render_debug_overlay(Canvas& canvas,
+                                         const game::GameSnapshot& snapshot,
+                                         domain::ColorValue fg_color) {
+    const auto& actors = snapshot.world().actors();
+    canvas.draw_rect_outline(actors.player().hitbox(), fg_color);
+    for (size_t i = 0; i < actors.obstacles().count(); ++i) {
+        canvas.draw_rect_outline(actors.obstacles().at(i).hitbox(), fg_color);
+    }
+    BitmapFont::draw_text(canvas, 10, 10, "DBG: HITBOX ON", fg_color);
+}
+
 void SceneRenderer::render(Canvas& canvas, const game::GameSnapshot& snapshot) {
     const auto& status = snapshot.status();
     const domain::ColorValue bg_color = status.is_night()
@@ -87,6 +98,9 @@ void SceneRenderer::render(Canvas& canvas, const game::GameSnapshot& snapshot) {
     render_environment(canvas, snapshot.world().environment(), fg_color);
     render_actors(canvas, snapshot.world().actors(), animation_tick_, fg_color);
     render_hud(canvas, status, fg_color);
+    if (debug_overlay_) {
+        render_debug_overlay(canvas, snapshot, fg_color);
+    }
     if (status.is_game_over()) {
         render_game_over(canvas, fg_color);
     }

@@ -120,3 +120,22 @@ DINO_TEST_CASE(TestSceneRendererGameOverRendering) {
     ASSERT_TRUE(black_pixels_restart > 50);
 }
 
+DINO_TEST_CASE(TestSceneRendererDebugOverlay) {
+    dino::game::GameEngine engine(0x1234U);
+    dino::graphics::Canvas canvas(dino::domain::Dimensions(600, 800));
+    dino::graphics::SceneRenderer renderer;
+    renderer.set_debug_overlay(true);
+    renderer.render(canvas, engine.snapshot());
+
+    // Debug overlay draws text "DBG: HITBOX ON" at (10, 10)
+    int dbg_pixels = 0;
+    for (int y = 10; y < 20; ++y) {
+        for (int x = 10; x < 100; ++x) {
+            if (canvas.get_pixel(x, y) == dino::domain::ColorValue::Black) {
+                ++dbg_pixels;
+            }
+        }
+    }
+    ASSERT_TRUE(dbg_pixels > 0);
+}
+

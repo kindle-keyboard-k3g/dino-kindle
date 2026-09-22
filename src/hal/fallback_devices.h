@@ -18,6 +18,7 @@ public:
     static constexpr int32_t TERM_WIDTH = 75;
     static constexpr int32_t TERM_HEIGHT = 40;
 
+    /// Downsamples and renders canvas to ANSI terminal with cursor positioning.
     void present(const graphics::Canvas& canvas,
                  const domain::BoundingBox& damage) override;
 };
@@ -27,8 +28,10 @@ public:
  */
 class PpmFrameBuffer : public FrameBuffer {
 public:
+    /// Constructs PPM framebuffer writing to specified path.
     explicit PpmFrameBuffer(std::string output_path = "output.ppm");
 
+    /// Dumps canvas to binary PPM image.
     void present(const graphics::Canvas& canvas,
                  const domain::BoundingBox& damage) override;
 
@@ -41,9 +44,12 @@ private:
  */
 class AnsiTerminalInput : public InputDevice {
 public:
+    /// Enables raw non-canonical terminal mode.
     AnsiTerminalInput();
+    /// Restores previous terminal attributes.
     ~AnsiTerminalInput() override;
 
+    /// Reads pending ANSI key sequences into input state.
     void poll_events(game::InputState& state) override;
 
 private:
@@ -60,10 +66,13 @@ class MockFrameBuffer : public FrameBuffer {
 public:
     MockFrameBuffer() : present_count_(0), last_damage_{} {}
 
+    /// Records present call and damages.
     void present(const graphics::Canvas& canvas,
                  const domain::BoundingBox& damage) override;
 
+    /// Number of present calls.
     [[nodiscard]] size_t present_count() const { return present_count_; }
+    /// Bounding box of most recent damage area.
     [[nodiscard]] const domain::BoundingBox& last_damage() const { return last_damage_; }
 
 private:
@@ -79,11 +88,15 @@ public:
     MockEinkController()
         : update_count_(0), last_waveform_(graphics::RefreshWaveform::PartialDirectUpdate) {}
 
+    /// Records update call parameters.
     void update(const domain::BoundingBox& area,
                 graphics::RefreshWaveform waveform) override;
 
+    /// Number of update calls.
     [[nodiscard]] size_t update_count() const { return update_count_; }
+    /// Waveform from most recent update call.
     [[nodiscard]] graphics::RefreshWaveform last_waveform() const { return last_waveform_; }
+    /// Damaged area from most recent update call.
     [[nodiscard]] const domain::BoundingBox& last_area() const { return last_area_; }
 
 private:
@@ -99,12 +112,18 @@ class MockInputDevice : public InputDevice {
 public:
     MockInputDevice() = default;
 
+    /// Enqueues jump action for next poll.
     void queue_jump();
+    /// Enqueues duck start action for next poll.
     void queue_duck_start();
+    /// Enqueues duck stop action for next poll.
     void queue_duck_stop();
+    /// Enqueues restart action for next poll.
     void queue_restart();
+    /// Enqueues quit action for next poll.
     void queue_quit();
 
+    /// Drains queued actions into input state.
     void poll_events(game::InputState& state) override;
 
 private:

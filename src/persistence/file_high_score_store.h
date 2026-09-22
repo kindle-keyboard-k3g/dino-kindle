@@ -12,9 +12,22 @@ namespace dino::persistence {
  */
 class FileHighScoreStore : public HighScoreStore {
 public:
+    /**
+     * @brief Constructs high score store targeting a specific file path.
+     * @param file_path Destination file path.
+     */
     explicit FileHighScoreStore(std::string file_path);
 
+    /**
+     * @brief Reads and parses high score value from disk.
+     * @return Loaded ScoreValue, or 0 on failure.
+     */
     [[nodiscard]] domain::ScoreValue load() override;
+
+    /**
+     * @brief Writes high score using atomic write-fsync-rename sequence.
+     * @param score Score to persist.
+     */
     void save(domain::ScoreValue score) override;
 
 private:

@@ -19,14 +19,22 @@ public:
 
     RefreshCoordinator();
 
+    /// Indicates if milestone freeze is currently active.
     [[nodiscard]] bool is_frozen() const { return freeze_frames_remaining_ > 0; }
+    /// Determines whether to issue PartialDirectUpdate or FullGrayscaleClear.
     [[nodiscard]] RefreshWaveform determine_waveform() const;
 
+    /// Triggers milestone freeze and schedule full refresh.
     void notify_milestone();
+    /// Schedules full clear refresh on game over.
     void notify_game_over();
+    /// Clears freeze and schedules clean refresh on restart.
     void notify_restart();
+    /// Manually requests a full GC16 refresh.
     void request_full_refresh();
+    /// Acknowledges execution of full refresh waveform.
     void acknowledge_refresh();
+    /// Decrements milestone freeze counter by one frame.
     void decrement_freeze();
 
 private:

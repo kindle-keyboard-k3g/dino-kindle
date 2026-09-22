@@ -22,14 +22,19 @@ public:
               (is_game_over ? 2 : 0) |
               (is_milestone ? 4 : 0))) {}
 
+    /// Current score points.
     [[nodiscard]] constexpr domain::ScoreValue current_score() const {
         return scores_.current();
     }
+    /// Recorded high score points.
     [[nodiscard]] constexpr domain::ScoreValue high_score() const {
         return scores_.high();
     }
+    /// True if night-time palette inversion is active.
     [[nodiscard]] constexpr bool is_night() const { return (flags_ & 1) != 0; }
+    /// True if game ended due to collision.
     [[nodiscard]] constexpr bool is_game_over() const { return (flags_ & 2) != 0; }
+    /// True if score milestone flash effect is active.
     [[nodiscard]] constexpr bool is_milestone() const { return (flags_ & 4) != 0; }
 
 private:
@@ -46,7 +51,9 @@ public:
     GameSnapshot(domain::GameWorld world, RenderStatus status)
         : world_(world), status_(status) {}
 
+    /// Game world snapshot containing all actors and environment entities.
     [[nodiscard]] const domain::GameWorld& world() const { return world_; }
+    /// Overlay status flags and score data.
     [[nodiscard]] const RenderStatus& status() const { return status_; }
 
 private:

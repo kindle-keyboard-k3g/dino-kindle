@@ -14,6 +14,15 @@ namespace dino::graphics {
  */
 class SpriteRenderer {
 public:
+    /**
+     * @brief Renders Dino sprite selected by pose state and leg animation step.
+     * @param canvas Target destination Canvas.
+     * @param x Left coordinate.
+     * @param y Top coordinate.
+     * @param state Active player pose.
+     * @param leg_step Animation step index (0 or 1).
+     * @param color Drawing color.
+     */
     static void draw_dino(Canvas& canvas,
                           int32_t x,
                           int32_t y,
@@ -21,15 +30,35 @@ public:
                           uint8_t leg_step,
                           domain::ColorValue color);
 
+    /**
+     * @brief Renders obstacle sprite (cactus or pterodactyl).
+     * @param canvas Target destination Canvas.
+     * @param obstacle Obstacle entity to render.
+     * @param anim_step Animation step for winged obstacles.
+     * @param color Drawing color.
+     */
     static void draw_obstacle(Canvas& canvas,
                               const domain::Obstacle& obstacle,
                               uint8_t anim_step,
                               domain::ColorValue color);
 
+    /**
+     * @brief Renders decorative cloud sprite.
+     * @param canvas Target destination Canvas.
+     * @param cloud Cloud entity to render.
+     * @param color Drawing color.
+     */
     static void draw_cloud(Canvas& canvas,
                            const domain::Cloud& cloud,
                            domain::ColorValue color);
 
+    /**
+     * @brief Renders horizontal baseline and procedural ground terrain bumps.
+     * @param canvas Target destination Canvas.
+     * @param ground Ground entity with baseline Y and scroll offset.
+     * @param screen_width Canvas display width.
+     * @param color Drawing color.
+     */
     static void draw_ground(Canvas& canvas,
                             const domain::Ground& ground,
                             int32_t screen_width,

@@ -11,6 +11,12 @@ namespace dino::game {
  */
 class CollisionDetector {
 public:
+    /**
+     * @brief Tests if player hitbox intersects any active obstacle hitbox.
+     * @param player Player aggregate with current pose and hitbox.
+     * @param obstacles Collection of active obstacles.
+     * @return True if a collision occurred.
+     */
     [[nodiscard]] static bool has_collision(
         const domain::Player& player,
         const domain::ObstacleCollection& obstacles);

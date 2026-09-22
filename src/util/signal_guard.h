@@ -10,13 +10,28 @@ namespace dino::util {
  */
 class SignalGuard {
 public:
+    /**
+     * @brief Installs POSIX signal handlers for SIGINT and SIGTERM.
+     */
     SignalGuard();
+
+    /**
+     * @brief Restores default signal actions.
+     */
     ~SignalGuard();
 
     SignalGuard(const SignalGuard&) = delete;
     SignalGuard& operator=(const SignalGuard&) = delete;
 
+    /**
+     * @brief Checks whether a termination signal was caught.
+     * @return True if shutdown has been requested.
+     */
     [[nodiscard]] static bool is_interrupted();
+
+    /**
+     * @brief Programmatically flags application shutdown.
+     */
     static void trigger_shutdown();
 
 private:

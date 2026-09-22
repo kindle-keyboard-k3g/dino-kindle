@@ -10,8 +10,16 @@ namespace dino::util {
  */
 class Milliseconds {
 public:
+    /**
+     * @brief Constructs a duration with raw millisecond count.
+     * @param count Total elapsed milliseconds.
+     */
     explicit constexpr Milliseconds(int64_t count) : count_(count) {}
 
+    /**
+     * @brief Returns the inner millisecond count.
+     * @return Integer duration in milliseconds.
+     */
     [[nodiscard]] constexpr int64_t count() const { return count_; }
 
     constexpr bool operator<(const Milliseconds& other) const {
@@ -35,6 +43,7 @@ public:
 
     /**
      * @brief Reads current monotonic time in milliseconds.
+     * @return Current timestamp as Milliseconds.
      */
     [[nodiscard]] virtual Milliseconds now_milliseconds() const;
 };

@@ -12,7 +12,16 @@ class HighScoreStore {
 public:
     virtual ~HighScoreStore() = default;
 
+    /**
+     * @brief Loads stored high score, returning zero if not found or corrupted.
+     * @return Loaded ScoreValue.
+     */
     [[nodiscard]] virtual domain::ScoreValue load() = 0;
+
+    /**
+     * @brief Persists high score securely to storage.
+     * @param score High score to save.
+     */
     virtual void save(domain::ScoreValue score) = 0;
 };
 

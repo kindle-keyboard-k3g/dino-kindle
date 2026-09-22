@@ -53,6 +53,24 @@ void Canvas::fill_rect(const domain::BoundingBox& box, domain::ColorValue color)
     }
 }
 
+void Canvas::draw_rect_outline(const domain::BoundingBox& box, domain::ColorValue color) {
+    if (box.is_empty()) {
+        return;
+    }
+    const int32_t x1 = box.left();
+    const int32_t x2 = box.right() - 1;
+    const int32_t y1 = box.top();
+    const int32_t y2 = box.bottom() - 1;
+    for (int32_t x = x1; x <= x2; ++x) {
+        set_pixel(x, y1, color);
+        set_pixel(x, y2, color);
+    }
+    for (int32_t y = y1; y <= y2; ++y) {
+        set_pixel(x1, y, color);
+        set_pixel(x2, y, color);
+    }
+}
+
 void Canvas::draw_bitmap(int32_t x,
                          int32_t y,
                          int32_t width,

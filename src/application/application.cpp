@@ -1,5 +1,6 @@
 #include "application/application.h"
 #include "graphics/frame_differ.h"
+#include "util/debug_log.h"
 #include "util/signal_guard.h"
 
 #include <algorithm>
@@ -15,6 +16,11 @@ void ApplicationBuffers::copy_front_to_back() {
 Application::Application(const ApplicationOptions& options)
     : core_(options.seed()),
       execution_(HardwareContext::create(options), options.max_frames()) {
+    util::DebugLog::set_enabled(options.is_debug());
+    core_.engine_bundle().engine().set_godmode(options.is_godmode());
+    core_.pipeline_bundle().renderer().set_debug_overlay(options.is_debug());
+    util::DebugLog::log("[DINO-APP] Initialized with debug=", options.is_debug(),
+                        " godmode=", options.is_godmode());
     auto& store = execution_.runtime().services().hardware().peripherals().store();
     core_.engine_bundle().engine().set_high_score(store.load());
 }

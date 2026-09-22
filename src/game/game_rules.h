@@ -22,6 +22,11 @@ public:
     static constexpr int32_t MAX_SPAWN_GAP_PIXELS = 450;
     static constexpr int32_t TARGET_FRAME_MILLIS = 80;
 
+    /**
+     * @brief Computes scrolling speed based on current score points.
+     * @param score Current ScoreValue.
+     * @return Speed in fixed-point pixels per frame.
+     */
     [[nodiscard]] static domain::FixedPoint calculate_speed(domain::ScoreValue score);
 };
 

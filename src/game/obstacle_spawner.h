@@ -13,11 +13,25 @@ namespace dino::game {
  */
 class ObstacleSpawner {
 public:
+    /**
+     * @brief Constructs spawner with deterministic random seed.
+     * @param seed Pseudorandom generator seed.
+     */
     explicit ObstacleSpawner(uint32_t seed = 0x87654321U);
 
+    /**
+     * @brief Spawns obstacles and clouds as needed based on gap distance and score.
+     * @param obstacles Active obstacle collection to populate.
+     * @param clouds Active cloud collection to populate.
+     * @param current_score Current score for difficulty progression.
+     */
     void update(domain::ObstacleCollection& obstacles,
                 domain::CloudCollection& clouds,
                 domain::ScoreValue current_score);
+
+    /**
+     * @brief Resets spawner gap distance and random state.
+     */
     void reset();
 
 private:

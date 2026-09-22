@@ -11,6 +11,12 @@ namespace dino::graphics {
  */
 class FrameDiffer {
 public:
+    /**
+     * @brief Computes minimum bounding box containing all modified pixels between frames.
+     * @param previous_frame Previous front canvas.
+     * @param current_frame Newly rendered back canvas.
+     * @return BoundingBox of changed area, or empty box if identical.
+     */
     [[nodiscard]] static domain::BoundingBox compute_damage(
         const Canvas& previous_frame,
         const Canvas& current_frame);

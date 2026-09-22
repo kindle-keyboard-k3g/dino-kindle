@@ -10,7 +10,17 @@ namespace dino::persistence {
  */
 class StoragePath {
 public:
+    /**
+     * @brief Resolves first available writable directory for user data.
+     * @return Absolute directory path.
+     */
     [[nodiscard]] static std::string resolve_directory();
+
+    /**
+     * @brief Resolves full file path for given file name within writable storage.
+     * @param file_name File name (e.g. "highscore.dat").
+     * @return Full path to file.
+     */
     [[nodiscard]] static std::string resolve_file_path(const char* file_name);
 
 private:
